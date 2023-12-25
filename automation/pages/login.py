@@ -1,5 +1,4 @@
 from selenium.webdriver.common.by import By
-
 from automation.pages.files_elements import LoginElements, AlbumsElements
 from automation.pages.waiting_to import WaitToElement
 

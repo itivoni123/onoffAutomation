@@ -1,8 +1,19 @@
-from datetime import datetime
-from os import path, environ, makedirs
+from os import path, environ
 import pytest
-from selenium.common.exceptions import TimeoutException, WebDriverException
+from selenium.webdriver.chrome.options import Options
 from seleniumwire import webdriver
+
+
+def get_chomre_options():
+    chrome_options = Options()
+    chrome_options.add_argument('--window-size=1920,1280')
+    chrome_options.add_argument("--disable-extensions")
+    chrome_options.add_argument("--kiosk")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    #chrome_options.add_argument("--headless")
+    # chrome_options.add_experimental_option('prefs', prefs)
+    return chrome_options
 
 
 def pytest_addoption(parser):
@@ -19,9 +30,26 @@ def pytest_addoption(parser):
 @pytest.fixture
 def browser(request):
     # browser_type = request.config.getoption('browser')
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(options=get_chomre_options())
     return driver
 
+
+@pytest.fixture
+def grid_driver(request):
+    browser_name = request.config.getoption('--browser', default='chrome')
+    grid_url = 'http://localhost:4444/wd/hub'
+
+    desired_capabilities = {
+        'browserName': 'chrome',
+        # Add any additional desired capabilities here
+    }
+
+    driver = webdriver.Remote(command_executor=grid_url, options=webdriver.ChromeOptions())
+
+    yield driver
+
+    # Teardown: Close the WebDriver session
+    driver.quit()
 
 @pytest.fixture
 def url(request):
