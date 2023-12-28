@@ -9,7 +9,6 @@ class TestMusicOnOff(TestCaseCC):
 
         # region Prepare
         login = LogInPage(browser)
-        print("Hello again! :)")
         browser.get(url)
         # endregion Prepare
 
@@ -20,6 +19,3 @@ class TestMusicOnOff(TestCaseCC):
         # region Validation
         assert login.wait.wait_until_present(By.ID, "search-albums")
         # endregion Validation
-
-    def test_select_album(self, browser, url):
-        pass

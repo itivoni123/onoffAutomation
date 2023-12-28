@@ -1,23 +1,12 @@
 from os import path, environ
 import pytest
+from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from seleniumwire import webdriver
-
-
-def get_chomre_options():
-    chrome_options = Options()
-    chrome_options.add_argument('--window-size=1920,1280')
-    chrome_options.add_argument("--disable-extensions")
-    chrome_options.add_argument("--kiosk")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    #chrome_options.add_argument("--headless")
-    # chrome_options.add_experimental_option('prefs', prefs)
-    return chrome_options
 
 
 def pytest_addoption(parser):
     parser.addoption('--browser', dest='browser', action='store', default='chrome')
+    parser.addoption('--grid_driver', dest='grid_driver', action='store', default='chrome')
     parser.addoption('--user', dest='user', action='store', default='')
     parser.addoption('--password', dest='password', action='store', default='')
     parser.addoption('--login_page', dest='login_page', action='store', default='https://facebook.com')
@@ -27,29 +16,47 @@ def pytest_addoption(parser):
                      default="/Users/itaytivony/Desktop/Duality/page_source.html")
 
 
+def get_chomre_options():
+    chrome_options = Options()
+    chrome_options.add_argument('--window-size=1920,1280')
+    chrome_options.add_argument("--disable-extensions")
+    chrome_options.add_argument("--kiosk")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    # chrome_options.add_argument("--headless")
+    # chrome_options.add_experimental_option('prefs', prefs)
+    return chrome_options
+
+
 @pytest.fixture
 def browser(request):
     # browser_type = request.config.getoption('browser')
+    browser_type = request.config.getoption('browser')
     driver = webdriver.Chrome(options=get_chomre_options())
     return driver
 
 
 @pytest.fixture
 def grid_driver(request):
-    browser_name = request.config.getoption('--browser', default='chrome')
+    browser_name = 'chrome'
+    browser_type = request.config.getoption('grid_driver')
+    # Instantiate an instance of Remote WebDriver with the desired capabilities.
     grid_url = 'http://localhost:4444/wd/hub'
+    if browser_name.lower() == browser_type:
+        firefox_options = Options()
+        # Add any Firefox-specific options here
 
-    desired_capabilities = {
-        'browserName': 'chrome',
-        # Add any additional desired capabilities here
-    }
+        driver = webdriver.Remote(
+            command_executor=grid_url,
+            options=webdriver.ChromeOptions()
+        )
+    elif "firefox" == browser_type.lower():
+        driver = webdriver.Remote(
+            command_executor=grid_url,
+            options=webdriver.FirefoxOptions()
+        )
+    return driver
 
-    driver = webdriver.Remote(command_executor=grid_url, options=webdriver.ChromeOptions())
-
-    yield driver
-
-    # Teardown: Close the WebDriver session
-    driver.quit()
 
 @pytest.fixture
 def url(request):
@@ -61,6 +68,7 @@ def url(request):
 def wiki_url(request):
     url = request.config.getoption('wiki_url')
     return url
+
 
 @pytest.fixture
 def file_path(request):
