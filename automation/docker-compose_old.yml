@@ -1,0 +1,42 @@
+version: '4'
+services:
+  HubService:
+    image: selenium/hub:latest
+    container_name: seleniumHub
+    ports:
+      - "4445:4444"
+
+  ChromeService:
+    image: selenium/node-chrome-debug
+    container_name: chromeNode
+    ports:
+      - "4446:5900"
+    environment:
+      - HUB_HOST=seleniumHub
+      - HUB_PORT=4444
+    depends_on:
+      - HubService
+
+
+  FirefoxService:
+    image: selenium/node-firefox-debug
+    container_name: firefoxNode
+    ports:
+      - "4447:5900"
+    environment:
+      - HUB_HOST=seleniumHub
+      - HUB_PORT=4444
+    depends_on:
+      - HubService
+
+
+  OperaService:
+    image: selenium/node-opera-debug
+    container_name: operaNode
+    ports:
+      - "4448:5900"
+    environment:
+      - HUB_HOST=seleniumHub
+      - HUB_PORT=4444
+    depends_on:
+      - HubService
