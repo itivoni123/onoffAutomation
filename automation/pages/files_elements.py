@@ -78,6 +78,8 @@ class SharedElements(object):
 class LoginElements(object):
     # region ID
     ID_LOGIN = "login"
+    ID_LOGOUT_BTN = "logout"
+    ID_LOGIN_AGAIN_LINK = "login-again"
     ID_LOGIN_BTN = "login-btn"
     # endregion ID
 

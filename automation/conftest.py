@@ -5,6 +5,10 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.edge.options import Options
 
+from automation.browser.set_browser import Browser
+
+grid_url = 'http://localhost:4444/wd/hub'
+
 
 def pytest_addoption(parser):
     parser.addoption('--browser', dest='browser', action='store', default='chrome')
@@ -39,24 +43,55 @@ def browser(request):
 
 
 @pytest.fixture
-def grid_driver(request):
-    browser_name = 'edge'
-    browser_type = request.config.getoption('grid_driver')
-    # Instantiate an instance of Remote WebDriver with the desired capabilities.
-    grid_url = 'http://localhost:4444/wd/hub'
-    if browser_name.lower() == "chrome":
+def chrome_browser():
+    driver = webdriver.Remote(
+        command_executor=grid_url,
+        options=webdriver.ChromeOptions()
 
-        driver = webdriver.Remote(
-            command_executor=grid_url,
-            options=webdriver.ChromeOptions()
-        )
-    elif "edge" == browser_type.lower():
-        driver = webdriver.Remote(
-            command_executor=grid_url,
-            options=webdriver.EdgeOptions()
-        )
-    return driver
+    )
+    yield {"browser_name": "Chrome", "driver": driver}
+    driver.quit()
 
+
+@pytest.fixture
+def firefox_browser():
+    driver = webdriver.Remote(
+        command_executor=grid_url,
+        options=webdriver.FirefoxOptions()
+
+    )
+    yield {"browser_name": "Firefox", "driver": driver}
+    driver.quit()
+
+
+@pytest.fixture
+def edge_browser():
+    driver = webdriver.Remote(
+        command_executor=grid_url,
+        options=webdriver.EdgeOptions()
+
+    )
+    yield {"browser_name": "Edge", "driver": driver}
+    driver.quit()
+# @pytest.fixture(params=["chrome", "firefox", "edge"], scope="function")
+# @pytest.fixture(scope="session", autouse=True)
+# def close_all_drivers(request):
+#     print("hello")
+#     def session_teardown():
+#         print("\nTearing down after the entire test session")
+#
+#     # Register the teardown function with Pytest
+#
+#     # b = Browser()
+#     # # Close all WebDriver instances after the test session
+#     # close_browser = b.grid_browser()
+#     # for br in close_browser:
+#     #     try:
+#     #         print(br, "browser type")
+#     #         close_browser[br].quit()
+#     #     except Exception as e:
+#     #         print(f"Error while quitting WebDriver: {e}")
+#     request.addfinalizer(session_teardown)
 
 @pytest.fixture
 def url(request):
@@ -111,6 +146,7 @@ def get_random_storage():
 
 def check_for_parametrize(item):
     format_params_marker = _get_marker(item, 'params_format')
+    print(item, format_params_marker, "format_params_marker")
     if not format_params_marker:
         return
 
@@ -206,16 +242,15 @@ def get_screenshots_folder():
 
 
 # def pytest_sessionfinish(session, exitstatus):
-#     """ whole test run finishes. """
+#     # Close all WebDriver instances after the test session
 #
-#     screenshots_path = get_screenshots_folder()
-#
-#     try:
-#         if 'test_check_build_status' in str(session.items):
-#             send_msg_to_slack(screenshots_path)
-#     except AttributeError:
-#         pass
-#     # delete_old_screenshots_s3()
+#     if str(session):
+#         driver_types = grid_driver()
+#         for driver in driver_types.keys():
+#             try:
+#                 driver_types[driver].quit()
+#             except Exception as e:
+#                 print(f"Error while quitting WebDriver: {e}")
 
 
 def pytest_collection_modifyitems(session, config, items):
