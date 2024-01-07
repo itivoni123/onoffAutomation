@@ -1,21 +1,9 @@
-from selenium.webdriver.firefox.options import Options
-from selenium import webdriver
-
-from automation.browser.set_browser import Browser
+import pytest
 
 
-class TestCaseCC(Browser):
-
-    # def create_grid_driver(self, browser_name='firefox', grid_url='http://localhost:4444/wd/hub'):
-    #     if browser_name.lower() == 'firefox':
-    #         firefox_options = Options()
-    #         # Add any Firefox-specific options here
-    #
-    #         driver = webdriver.Remote(
-    #             command_executor=grid_url,
-    #             options=webdriver.ChromeOptions()
-    #         )
-    #         return driver
+@pytest.mark.usefixtures("init_driver")
+class TestCaseCC(object):
+    pass
 
     def teardown_method(self):
         pass

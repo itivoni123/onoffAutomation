@@ -1,5 +1,7 @@
+import logging
 from os import path, environ
 import pytest
+import selenium
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options
@@ -42,56 +44,33 @@ def browser(request):
     return driver
 
 
-@pytest.fixture
-def chrome_browser():
-    driver = webdriver.Remote(
-        command_executor=grid_url,
-        options=webdriver.ChromeOptions()
+@pytest.fixture(params=["chrome", "firefox", "edge"], scope='class')
+def init_driver(request):
+    if request.param == "chrome":
+        web_driver = webdriver.Remote(
+            command_executor=grid_url,
+            options=webdriver.ChromeOptions()
 
-    )
-    yield {"browser_name": "Chrome", "driver": driver}
-    driver.quit()
+        )
+    if request.param == "firefox":
+        web_driver = webdriver.Remote(
+            command_executor=grid_url,
+            options=webdriver.FirefoxOptions()
 
+        )
+    if request.param == "edge":
+        web_driver = webdriver.Remote(
+            command_executor=grid_url,
+            options=webdriver.EdgeOptions()
 
-@pytest.fixture
-def firefox_browser():
-    driver = webdriver.Remote(
-        command_executor=grid_url,
-        options=webdriver.FirefoxOptions()
+        )
+    request.cls.driver = web_driver
+    yield
+    try:
+        web_driver.quit()
+    except (Exception, selenium.common.exceptions.InvalidSessionIdException):
+        logging.info("")
 
-    )
-    yield {"browser_name": "Firefox", "driver": driver}
-    driver.quit()
-
-
-@pytest.fixture
-def edge_browser():
-    driver = webdriver.Remote(
-        command_executor=grid_url,
-        options=webdriver.EdgeOptions()
-
-    )
-    yield {"browser_name": "Edge", "driver": driver}
-    driver.quit()
-# @pytest.fixture(params=["chrome", "firefox", "edge"], scope="function")
-# @pytest.fixture(scope="session", autouse=True)
-# def close_all_drivers(request):
-#     print("hello")
-#     def session_teardown():
-#         print("\nTearing down after the entire test session")
-#
-#     # Register the teardown function with Pytest
-#
-#     # b = Browser()
-#     # # Close all WebDriver instances after the test session
-#     # close_browser = b.grid_browser()
-#     # for br in close_browser:
-#     #     try:
-#     #         print(br, "browser type")
-#     #         close_browser[br].quit()
-#     #     except Exception as e:
-#     #         print(f"Error while quitting WebDriver: {e}")
-#     request.addfinalizer(session_teardown)
 
 @pytest.fixture
 def url(request):
