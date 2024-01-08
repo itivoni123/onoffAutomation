@@ -1,5 +1,4 @@
 from selenium.webdriver.common.by import By
-
 from automation.pages.files_elements import LoginElements, AlbumsElements
 from automation.pages.waiting_to import WaitToElement
 
@@ -20,3 +19,7 @@ class LogInPage(LoginElements, AlbumsElements):
         self.browser.find_element(By.ID, self.ID_LOGIN_BTN).click()
         self.wait.wait_until_present(By.ID, self.ID_ALBUMS_RELEASED_TITLE)
 
+    def logout_musiconoff(self):
+        self.wait.wait_until_present(By.ID, self.ID_LOGOUT_BTN)
+        self.browser.find_element(By.ID, self.ID_LOGOUT_BTN).click()
+        self.wait.wait_until_present(By.ID, self.ID_LOGIN_AGAIN_LINK)

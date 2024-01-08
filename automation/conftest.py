@@ -1,12 +1,20 @@
-from datetime import datetime
-from os import path, environ, makedirs
+import logging
+from os import path, environ
 import pytest
-from selenium.common.exceptions import TimeoutException, WebDriverException
-from seleniumwire import webdriver
+import selenium
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.edge.options import Options
+
+from automation.browser.set_browser import Browser
+
+grid_url = 'http://localhost:4444/wd/hub'
 
 
 def pytest_addoption(parser):
     parser.addoption('--browser', dest='browser', action='store', default='chrome')
+    parser.addoption('--grid_driver', dest='grid_driver', action='store', default='edge')
     parser.addoption('--user', dest='user', action='store', default='')
     parser.addoption('--password', dest='password', action='store', default='')
     parser.addoption('--login_page', dest='login_page', action='store', default='https://facebook.com')
@@ -16,11 +24,52 @@ def pytest_addoption(parser):
                      default="/Users/itaytivony/Desktop/Duality/page_source.html")
 
 
+def get_chomre_options():
+    chrome_options = Options()
+    chrome_options.add_argument('--window-size=1920,1280')
+    chrome_options.add_argument("--disable-extensions")
+    chrome_options.add_argument("--kiosk")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    # chrome_options.add_argument("--headless")
+    # chrome_options.add_experimental_option('prefs', prefs)
+    return chrome_options
+
+
 @pytest.fixture
 def browser(request):
     # browser_type = request.config.getoption('browser')
-    driver = webdriver.Chrome()
+    browser_type = request.config.getoption('browser')
+    driver = webdriver.Chrome(options=get_chomre_options())
     return driver
+
+
+@pytest.fixture(params=["chrome", "firefox", "edge"], scope='class')
+def init_driver(request):
+    if request.param == "chrome":
+        web_driver = webdriver.Remote(
+            command_executor=grid_url,
+            options=webdriver.ChromeOptions()
+
+        )
+    if request.param == "firefox":
+        web_driver = webdriver.Remote(
+            command_executor=grid_url,
+            options=webdriver.FirefoxOptions()
+
+        )
+    if request.param == "edge":
+        web_driver = webdriver.Remote(
+            command_executor=grid_url,
+            options=webdriver.EdgeOptions()
+
+        )
+    request.cls.driver = web_driver
+    yield
+    try:
+        web_driver.quit()
+    except (Exception, selenium.common.exceptions.InvalidSessionIdException):
+        logging.info("")
 
 
 @pytest.fixture
@@ -33,6 +82,7 @@ def url(request):
 def wiki_url(request):
     url = request.config.getoption('wiki_url')
     return url
+
 
 @pytest.fixture
 def file_path(request):
@@ -75,6 +125,7 @@ def get_random_storage():
 
 def check_for_parametrize(item):
     format_params_marker = _get_marker(item, 'params_format')
+    print(item, format_params_marker, "format_params_marker")
     if not format_params_marker:
         return
 
@@ -170,16 +221,15 @@ def get_screenshots_folder():
 
 
 # def pytest_sessionfinish(session, exitstatus):
-#     """ whole test run finishes. """
+#     # Close all WebDriver instances after the test session
 #
-#     screenshots_path = get_screenshots_folder()
-#
-#     try:
-#         if 'test_check_build_status' in str(session.items):
-#             send_msg_to_slack(screenshots_path)
-#     except AttributeError:
-#         pass
-#     # delete_old_screenshots_s3()
+#     if str(session):
+#         driver_types = grid_driver()
+#         for driver in driver_types.keys():
+#             try:
+#                 driver_types[driver].quit()
+#             except Exception as e:
+#                 print(f"Error while quitting WebDriver: {e}")
 
 
 def pytest_collection_modifyitems(session, config, items):
