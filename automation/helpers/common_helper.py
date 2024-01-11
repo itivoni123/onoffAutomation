@@ -5,19 +5,16 @@ import itertools
 from inspect import signature
 from distutils.util import strtobool
 from collections.abc import Iterable
-
 from os import path, listdir, environ, makedirs, remove
 from re import compile as recompile, sub
-from csv import DictReader, reader
+from csv import DictReader
 from time import sleep
 from types import FunctionType
 from string import hexdigits
 from logging import info
-from fnmatch import fnmatch
 from hashlib import sha1 as hashlibsha1
 from operator import ne
 from datetime import datetime, date
-from pydash import snake_case
 from openpyxl import load_workbook
 from pydash.strings import kebab_case
 from selenium.webdriver import ActionChains
