@@ -7,8 +7,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.edge.options import Options
 
-from automation.browser.set_browser import Browser
-
 grid_url = 'http://localhost:4444/wd/hub'
 
 
