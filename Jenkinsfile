@@ -1,5 +1,5 @@
 pipeline {
-    agent {
+    agent any {
         docker {
             image 'docker:dind'
             privileged true
