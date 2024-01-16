@@ -1,15 +1,15 @@
 from selenium.webdriver.common.by import By
-from automation.helpers.test_templates import TestCaseCC
+from automation.helpers.test_templates import TestCaseSelenium
 from automation.pages.login import LogInPage
 
 
-class TestMusicOnOff(TestCaseCC):
+class TestMusicOnOff(TestCaseSelenium):
 
-    def test_login(self, browser, url, user, password):
+    def test_login(self, url, user, password):
 
         # region Prepare
-        login = LogInPage(browser)
-        browser.get(url)
+        login = LogInPage(self.driver)
+        self.driver.get(url)
         # endregion Prepare
 
         # region Action

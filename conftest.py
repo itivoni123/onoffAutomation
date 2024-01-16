@@ -34,12 +34,23 @@ def get_chomre_options():
     return chrome_options
 
 
-@pytest.fixture
+@pytest.fixture(params=["chrome", "edge"], scope='class')
 def browser(request):
     # browser_type = request.config.getoption('browser')
-    browser_type = request.config.getoption('browser')
-    driver = webdriver.Chrome(options=get_chomre_options())
-    return driver
+
+    if request.param == "chrome":
+        web_driver = webdriver.Chrome()
+    if request.param == "firefox":
+        web_driver = webdriver.Firefox()
+    if request.param == "edge":
+        web_driver = webdriver.Edge()
+
+    request.cls.driver = web_driver
+    yield
+    try:
+        web_driver.quit()
+    except (Exception) as err:
+        logging.info(err)
 
 
 @pytest.fixture(params=["chrome", "firefox", "edge"], scope='class')
