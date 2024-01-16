@@ -4,6 +4,7 @@ pipeline {
             image 'docker:dind'
             privileged true
         }
+    }
     stages {
         stage("verify tooling") {
             steps {
