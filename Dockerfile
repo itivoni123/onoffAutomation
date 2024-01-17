@@ -6,7 +6,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 RUN mkdir e2e
 WORKDIR /usr/src/app/e2e
-COPY . /usr/src/app/e2e
+COPY automation /usr/src/app/e2e
 
 
 #COPY .. /app

@@ -7,7 +7,8 @@
 
 #### Relevant references
 - Docker Selenium Grid: https://www.youtube.com/watch?v=jZEFp7-VhmM&list=PLlc_LrU50tliN8PZ7Xk41NwrnelPHchSk
-
+- How to unsinstall Jenkins: https://www.youtube.com/watch?v=TV1hD7Y5iGk
+- Jenkins Workspace: /Users/itaytivony/.jenkins/workspace/ 
 
 
 
