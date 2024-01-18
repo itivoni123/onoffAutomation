@@ -15,7 +15,7 @@ pipeline {
         stage('Tests') {
             steps {
                 sh 'pytest -v -s -k test_numbers'
-                sh 'pytest -v -s -k test_status_code --url=https://todo.pixegami.io'
+                sh 'pytest -v -s -k test_update_task --url=https://todo.pixegami.io/'
             }
         }
     }
