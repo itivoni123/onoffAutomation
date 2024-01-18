@@ -2,14 +2,17 @@ import requests
 
 
 class RestAPI(object):
-    def create_task(self, payload, url):
-        return requests.put(url + "/create-task", json=payload)
+    def __init__(self, url):
+        self.url = url
 
-    def update_task(self, payload, url):
-        return requests.put(url + "/update-task", json=payload)
+    def create_task(self, payload):
+        return requests.put(self.url + "/create-task", json=payload)
 
-    def get_task(self, task_id, url):
-        return requests.get(url + f"/get-task/{task_id}")
+    def update_task(self, payload):
+        return requests.put(self.url + "/update-task", json=payload)
+
+    def get_task(self, task_id):
+        return requests.get(self.url + f"/get-task/{task_id}")
 
     def new_task_payload(self):
         return {

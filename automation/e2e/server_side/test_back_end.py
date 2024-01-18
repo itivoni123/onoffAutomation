@@ -2,7 +2,7 @@ import requests
 from automation.restApi.rest_functions import RestAPI
 
 
-class TestBackEnd(RestAPI):
+class TestBackEnd(object):
 
     def test_numbers(self):
 
@@ -31,24 +31,29 @@ class TestBackEnd(RestAPI):
         assert get_task_data["user_id"] == payload["user_id"]
 
     def test_update_task(self, url):
+        task_func = RestAPI(url)
 
-        #Create a task
-        payload = self.new_task_payload()
-        create_task_id_res = self.create_task(payload, url)
+        # region Prepare\Create a task
+        payload = task_func.new_task_payload()
+        create_task_id_res = task_func.create_task(payload)
         assert create_task_id_res.status_code == 200
+        # endregion Create a task
+
+        # region Action\Update the task
         task_id = create_task_id_res.json()["task"]["task_id"]
-        #Update the task
         new_payload = {
             "user_id": payload["user_id"],
             "task_id": task_id,
             "content": "my updated content",
             "is_done": True
         }
-        update_task_response = self.update_task(new_payload, url)
+        update_task_response = task_func.update_task(new_payload)
         assert update_task_response.status_code == 200
-        #Get and validate the changes
-        get_task_response = self.get_task(task_id, url)
+        # endregion Action\Update the task
+
+        # region Get and validate the changes
+        get_task_response = task_func.get_task(task_id)
         get_task_data = get_task_response.json()
-        print(get_task_data)
         assert get_task_data["content"] == new_payload["content"]
         assert get_task_data["is_done"] == new_payload["is_done"]
+        # region Get and validate the changes
