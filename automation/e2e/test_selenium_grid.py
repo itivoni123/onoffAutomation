@@ -1,9 +1,9 @@
 import logging
-from automation.helpers.test_templates import TestCaseCC
+from automation.helpers.test_templates import TestCaseSeleniumGrid
 from automation.pages.login import LogInPage
 
 
-class TestSeleniumGrid(TestCaseCC):
+class TestSeleniumGrid(TestCaseSeleniumGrid):
 
     def test_grid(self, url, user, password):
         # region prepare
