@@ -1,19 +1,7 @@
-import requests
 from automation.restApi.rest_functions import RestAPI
 
 
 class TestBackEnd(object):
-
-    def test_numbers(self):
-
-        a = 1
-        b = 3
-        assert a + b == 4
-
-    def test_status_code(self, url):
-
-        res = requests.get(url)
-        assert res.status_code == 200
 
     def test_create_task(self, url):
 
@@ -57,3 +45,44 @@ class TestBackEnd(object):
         assert get_task_data["content"] == new_payload["content"]
         assert get_task_data["is_done"] == new_payload["is_done"]
         # region Get and validate the changes
+
+    def test_delete_task(self, url):
+
+        rest = RestAPI(url)
+
+        # region Create a task
+        payload = rest.new_task_payload()
+        create_task_response = rest.create_task(payload)
+        assert create_task_response.status_code == 200
+        task_id = create_task_response.json()["tasks"]["task_id"]
+        # endregion Create a task
+
+        # region Delete the task
+        delete_task_response = rest.delete_task(task_id)
+        assert delete_task_response.status_code == 200
+        # endregion Delete the task
+
+        # region Validation
+        get_task_response = rest.get_task(task_id)
+        assert get_task_response.status_code == 404
+        # endregion Validation
+
+    def test_list_tasks(self, url):
+
+        rest = RestAPI(url)
+        # region Create N tasks
+        n = 3
+        payload = rest.new_task_payload()
+        for _ in range(n):
+            create_task_response = rest.create_task(payload)
+            assert create_task_response.status_code == 200
+        # endregion Create N tasks
+
+        # region List tasks, and check that there are N tasks
+        user_id = payload["user_id"]
+        list_task_response = rest.list_task(user_id)
+        assert list_task_response.status_code == 200
+        data = list_task_response.json()
+        tasks = data["tasks"]
+        assert len(tasks) == n
+        # endregion List tasks, and check that there are N tasks
