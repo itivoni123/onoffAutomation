@@ -54,7 +54,7 @@ class TestBackEnd(object):
         payload = rest.new_task_payload()
         create_task_response = rest.create_task(payload)
         assert create_task_response.status_code == 200
-        task_id = create_task_response.json()["tasks"]["task_id"]
+        task_id = create_task_response.json()["task"]["task_id"]
         # endregion Create a task
 
         # region Delete the task

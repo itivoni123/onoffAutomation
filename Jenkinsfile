@@ -16,7 +16,8 @@ pipeline {
             steps {
                 sh 'pytest -v -s -k test_create_task --url=https://todo.pixegami.io/'
                 sh 'pytest -v -s -k test_update_task --url=https://todo.pixegami.io/'
-                sh 'pytest -v -s -k test_update_task --url=https://todo.pixegami.io/'
+                sh 'pytest -v -s -k test_delete_task --url=https://todo.pixegami.io/'
+                sh 'pytest -v -s -k test_list_tasks --url=https://todo.pixegami.io/'
             }
         }
     }
