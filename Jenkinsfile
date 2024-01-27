@@ -18,6 +18,7 @@ pipeline {
                 sh 'pytest -v -s -k test_update_task --url=https://todo.pixegami.io/'
                 sh 'pytest -v -s -k test_delete_task --url=https://todo.pixegami.io/'
                 sh 'pytest -v -s -k test_list_tasks --url=https://todo.pixegami.io/'
+                sh 'pytest -v -s -k test_get_data --url=https://todo.pixegami.io/'
             }
         }
     }
