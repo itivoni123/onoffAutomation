@@ -29,3 +29,8 @@ class RestAPI(object):
             "user_id": user_id,
             "is_done": False
         }
+
+    def get_data(self, run_num):
+        r = requests.get(self.url)
+        print(f"call # {run_num}")
+        print(r.status_code)

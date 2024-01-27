@@ -1,3 +1,8 @@
+from concurrent.futures.thread import ThreadPoolExecutor
+from time import perf_counter
+
+import requests
+
 from automation.restApi.rest_functions import RestAPI
 
 
@@ -86,3 +91,12 @@ class TestBackEnd(object):
         tasks = data["tasks"]
         assert len(tasks) == n
         # endregion List tasks, and check that there are N tasks
+
+    def test_get_data(self, url):
+        rest = RestAPI(url)
+        start = perf_counter()
+        urls = range(1, 250)
+        with ThreadPoolExecutor() as executor:
+            executor.map(rest.get_data, urls)
+        stop = perf_counter()
+        print("time taken:", stop - start)

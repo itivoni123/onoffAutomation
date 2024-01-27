@@ -8,7 +8,8 @@
 #### Relevant references
 - Docker Selenium Grid: https://www.youtube.com/watch?v=jZEFp7-VhmM&list=PLlc_LrU50tliN8PZ7Xk41NwrnelPHchSk
 - How to unsinstall Jenkins: https://www.youtube.com/watch?v=TV1hD7Y5iGk
-- Jenkins Workspace: /Users/itaytivony/.jenkins/workspace/ 
+- Jenkins Workspace: /Users/itaytivony/.jenkins/workspace/
+- How to run Jenkins: docker run --rm --name jenkis -p 8080:8080 -p 5000:5000 -v /Users/itaytivony/Desktop/onoffAutomation/jenkins_home:/var/jenkins_home jenkins/jenkins:lts
 
 
 
