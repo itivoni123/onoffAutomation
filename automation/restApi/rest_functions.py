@@ -1,5 +1,6 @@
 import requests
 import uuid
+import asyncio
 
 
 class RestAPI(object):
@@ -34,3 +35,17 @@ class RestAPI(object):
         r = requests.get(self.url)
         print(f"call # {run_num}")
         print(r.status_code)
+
+    async def fetch(self, s, url):
+        async with s.get(self.url, url) as r:
+            if r.status_code != 200:
+                r.raise_for_status()
+            return await r.text()
+
+    async def fetch_all(self, s, urls):
+        tasks = []
+        for url in urls:
+            task = asyncio.create_task(self.fetch(s, url))
+            tasks.append(task)
+        res = await asyncio.gather(*tasks)
+        return res
