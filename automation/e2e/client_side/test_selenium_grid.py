@@ -1,13 +1,19 @@
 import logging
+
+import pytest
+
 from automation.helpers.test_templates import TestCaseSeleniumGrid
 from automation.pages.login import LogInPage
 
 
 class TestSeleniumGrid(TestCaseSeleniumGrid):
 
-    def test_grid(self, url, user, password):
+    @pytest.fixture
+    def login(self):
+        return LogInPage(self.driver)
+
+    def test_grid(self, url, user, password, login):
         # region prepare
-        login = LogInPage(self.driver)
         self.driver.get(url)
         # endregion Prepare
 
@@ -22,10 +28,9 @@ class TestSeleniumGrid(TestCaseSeleniumGrid):
         assert login.logout_musiconoff()
         # endregion Validation
 
-    def test_logout_onoff(self, url, user, password):
+    def test_logout_onoff(self, url, user, password, login):
 
         # region Prepare
-        login = LogInPage(self.driver)
         self.driver.get(url)
 
         login.login_musiconoff(user, password)
