@@ -14,8 +14,8 @@ pipeline {
         }
         stage('Install Apps') {
             steps {
-                sh 'apt-get update'
-                sh 'apt-get install python3'
+                sh 'sudo apt-get update'
+                sh 'sudo apt-get install python3'
             }
         }
         stage('Tests') {
