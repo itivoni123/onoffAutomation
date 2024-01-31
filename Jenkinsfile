@@ -14,9 +14,9 @@ pipeline {
         }
         stage('Install Apps') {
             steps {
-                sh 'sleep 5'
+                //sh 'sleep 5'
                 sh 'pwd'
-                sh 'cd /var/jenkins_home/workspace/run-bash'
+                //sh 'cd /var/jenkins_home/workspace/run-bash'
                 sh 'apt-get update'
                 sh 'apt-get install python3'
             }
