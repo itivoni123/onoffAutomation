@@ -17,8 +17,8 @@ pipeline {
                 //sh 'sleep 5'
                 sh 'pwd'
                 //sh 'cd /var/jenkins_home/workspace/run-bash'
-                sh 'apt-get update'
-                sh 'apt-get install python3'
+                sh 'sudo apt-get update'
+                sh 'sudo apt-get install python3'
             }
         }
         stage('Tests') {
