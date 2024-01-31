@@ -12,6 +12,11 @@ pipeline {
                 git branch: 'backend-tests', url: 'https://github.com/itivoni123/onoffAutomation.git'
             }
         }
+        stage('Install Apps') {
+            steps {
+                sh './shell_test.sh'
+            }
+        }
         stage('Tests') {
             steps {
                 sh 'pytest -v -s -k test_create_task --url=https://todo.pixegami.io/'
