@@ -14,6 +14,7 @@ pipeline {
         }
         stage('Install Apps') {
             steps {
+                sh 'sleep 5'
                 sh 'sudo apt-get update'
                 sh 'sudo apt-get install python3'
             }
