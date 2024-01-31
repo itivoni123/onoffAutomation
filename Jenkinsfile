@@ -14,6 +14,7 @@ pipeline {
         }
         stage('Install Apps') {
             steps {
+                sh "chmod +x -R ~/shell_test.sh"
                 sh './shell_test.sh'
             }
         }
