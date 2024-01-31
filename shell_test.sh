@@ -1,4 +1,4 @@
-#!/bin/bash
+"#!/bin/bash"
 echo Hello World!
 sleep 10
 apt-get update
