@@ -14,8 +14,8 @@ pipeline {
         }
         stage('Install Apps') {
             steps {
-                sh "chmod +x -R /var/jenkins_home/workspace/run-bash/automation/shell_test.sh"
-                sh '/var/jenkins_home/workspace/run-bash/automation/shell_test.sh"'
+                //sh "chmod +x -R /var/jenkins_home/workspace/run-bash/automation/shell_test.sh"
+                //sh '/var/jenkins_home/workspace/run-bash/automation/shell_test.sh"'
             }
         }
         stage('Tests') {
