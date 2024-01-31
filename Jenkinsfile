@@ -14,11 +14,8 @@ pipeline {
         }
         stage('Install Apps') {
             steps {
-                sh 'sleep 10'
-                sh 'cd /var/jenkins_home/workspace/run-bash/automation/'
-                sh 'ls -l'
-                sh "chmod +x -R shell_test.sh"
-                sh 'bash shell_test.sh"'
+                sh 'apt-get update'
+                sh 'apt-get install python3'
             }
         }
         stage('Tests') {
