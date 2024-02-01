@@ -12,9 +12,13 @@ pipeline {
                 git branch: 'backend-tests', url: 'https://github.com/itivoni123/onoffAutomation.git'
             }
         }
-        stage('Tests') {
+        stage('Install Apps') {
             steps {
-                sh 'pytest -v -s -k test_selenium_grid.py --url=https://musiconoff.com --password=foofa123 --user=Admin'
+                //sh 'sleep 5'
+                sh 'pwd'
+                //sh 'cd /var/jenkins_home/workspace/run-bash'
+                sh 'sudo apt-get update'
+                sh 'sudo apt-get install python3'
             }
         }
     }
