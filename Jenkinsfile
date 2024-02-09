@@ -4,12 +4,12 @@ pipeline {
     stages {
         stage('Chekcout') {
             steps {
-                checkout scmGit(branches: [[name: '*/backend-tests']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/itivoni123/onoffAutomation.git']])
+                checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/itivoni123/onoffAutomation.git']])
             }
         }
         stage('Build') {
             steps {
-                git branch: 'backend-tests', url: 'https://github.com/itivoni123/onoffAutomation.git'
+                git branch: 'develop', url: 'https://github.com/itivoni123/onoffAutomation.git'
             }
         }
         stage('Install Apps') {
