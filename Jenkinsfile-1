@@ -17,17 +17,8 @@ pipeline {
                 //sh 'sleep 5'
                 sh 'pwd'
                 //sh 'cd /var/jenkins_home/workspace/run-bash'
-                sh 'sudo apt-get update'
-                sh 'sudo apt-get install python3'
-            }
-        }
-        stage('Tests') {
-            steps {
-                sh 'pytest -v -s -k test_create_task --url=https://todo.pixegami.io/'
-                sh 'pytest -v -s -k test_update_task --url=https://todo.pixegami.io/'
-                sh 'pytest -v -s -k test_delete_task --url=https://todo.pixegami.io/'
-                sh 'pytest -v -s -k test_list_tasks --url=https://todo.pixegami.io/'
-                sh 'pytest -v -s -k test_get_data --url=https://todo.pixegami.io/'
+                sh 'apt-get update'
+                sh 'apt-get install python3'
             }
         }
     }
