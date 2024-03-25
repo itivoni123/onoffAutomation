@@ -16,10 +16,14 @@
 #### How To Run The Tests
 - Validate that you on the right path. For example: /Users/{computer-name}/Desktop/onoffAutomation/automation/e2e
 - Run the docker container. For example: docker compose -f docker-compose.yml up -d
-- To see the Selenium Grid Instances: http://localhost:4444/ui- 
+- To see the Selenium Grid Instances: http://localhost:4444/ui 
 
 
 #### How To Run The Jenkins in Docker
+- Jenkins Python Pipeline Tutorial: https://www.youtube.com/watch?v=6njM8g5hKuk&t=794s
 - To create one from scratch run the following command: "docker run -p 8080:8080 -p 5000:5000 -d -v jenkis_home:/var/jenkins_home jenkins/jenkins:lts"
 - Then run "docker ps -a" and then run: "docker logs {container_id}" then the password will be shown.
-- 
+
+
+#### How To Run Test Locally
+- Verify that the test inherit the "browser" fixture like: test_login  
